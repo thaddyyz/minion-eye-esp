@@ -30,6 +30,23 @@ GPIO18/19 (USB D-/D+). Pins are defined at the top of `src/main.cpp`.
 
 If the upload picks the wrong port, add `upload_port = COMx` to `platformio.ini`.
 
+## Choosing the mood from a web page
+
+The eye hosts a small web page. By default it cycles through moods at random ("Auto").
+
+- **Without setup:** join the WiFi network **MinionEye** (password `minion123`) and open
+  <http://192.168.4.1>.
+- **On your home WiFi:** copy [.env.example](.env.example) to `.env`, fill in `WIFI_SSID` and
+  `WIFI_PASS` (2.4 GHz networks only), and upload. `.env` is ignored by git, and
+  [scripts/load_env.py](scripts/load_env.py) passes it to the firmware at build time. The eye
+  prints its address in the Serial Monitor, and also answers at <http://minioneye.local>. If it
+  cannot connect within 15 seconds it falls back to the MinionEye network.
+  (Optional `.env` keys: `AP_SSID`, `AP_PASS`, `MDNS_NAME`.)
+  Note that the credentials are compiled into the firmware, so don't share the `.bin` file.
+- **The page:** one button per mood, plus **Auto** to go back to the random cycle.
+
+There is also a small API: `GET /api/state` and `GET /api/mood?name=happy` (or `auto`).
+
 ## Troubleshooting
 
 - **No serial output**: `ARDUINO_USB_CDC_ON_BOOT=1` is set; reopen the monitor after reset.
